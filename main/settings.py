@@ -142,9 +142,10 @@ CORS_ALLOW_ALL_ORIGINS = False  # Only for development
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://localhost:3001",
     "https://developer43.pythonanywhere.com",
     # Add your deployed frontend's URL here, for example:
-    "https://dekoelektrik.vercel.app/",
+    "https://dekoelektrik.vercel.app",
 ]
 
 # REST Framework settings

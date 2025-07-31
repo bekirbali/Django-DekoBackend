@@ -5,7 +5,7 @@ from ckeditor.fields import RichTextField
 
 class News(models.Model):
     main_title = models.CharField(max_length=200)
-    sub_title = models.CharField(max_length=200, default="")
+    sub_title = models.CharField(max_length=200, default="", blank=True)
     main_context = RichTextField()
     main_image = models.ImageField(upload_to='news/')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -16,14 +16,6 @@ class News(models.Model):
 
     class Meta:
         ordering = ['-created_at']
-
-class NewsDetail(models.Model):
-    news = models.ForeignKey(News, related_name='details', on_delete=models.CASCADE)
-    title = models.CharField(max_length=200, blank=True)
-    context = RichTextField(blank=True)
-
-    def __str__(self):
-        return f"{self.news.main_title} - {self.title}"
 
 class NewsImage(models.Model):
     news = models.ForeignKey(News, related_name='additional_images', on_delete=models.CASCADE)

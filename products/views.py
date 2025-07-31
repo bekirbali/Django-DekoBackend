@@ -14,7 +14,16 @@ class ProductListAPIView(generics.ListAPIView):
 class ProductDetailAPIView(generics.RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    lookup_field = 'main_title'
+    lookup_field = 'slug'
+
+    def get_object(self):
+        lookup_value = self.kwargs[self.lookup_field]
+        try:
+            # Önce slug ile ara
+            return Product.objects.get(slug=lookup_value)
+        except Product.DoesNotExist:
+            # Bulamazsa main_title ile ara (backward compatibility)
+            return Product.objects.get(main_title=lookup_value)
 
 @api_view(['GET'])
 def product_list(request):
@@ -26,13 +35,19 @@ def product_list(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def product_detail(request, title):
+def product_detail(request, slug):
     """
-    Retrieve a specific product by title
+    Retrieve a specific product by slug or main_title
     """
     try:
-        product = Product.objects.get(main_title=title)
-        serializer = ProductSerializer(product, context={'request': request})
-        return Response(serializer.data)
+        # Önce slug ile ara
+        product = Product.objects.get(slug=slug)
     except Product.DoesNotExist:
-        return Response({'error': 'Product not found'}, status=404)
+        try:
+            # Bulamazsa main_title ile ara
+            product = Product.objects.get(main_title=slug)
+        except Product.DoesNotExist:
+            return Response({'error': 'Product not found'}, status=404)
+    
+    serializer = ProductSerializer(product, context={'request': request})
+    return Response(serializer.data)
