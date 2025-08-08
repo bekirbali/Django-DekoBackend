@@ -1,7 +1,11 @@
 from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 import json
+import logging
+
+logger = logging.getLogger(__name__)
 
 @csrf_exempt
 def contact_form(request):
@@ -33,9 +37,8 @@ def contact_form(request):
             send_mail(
                 subject,
                 email_message,
-                # 'your-sending-email@example.com',  # This will be configured in settings.py 
-                'bfbalidev@gmail.com',  # This will be configured in settings.py -sender address*
-                ['bfbalidev@gmail.com'],  # Recipient email address
+                settings.DEFAULT_FROM_EMAIL,  # sender address (from settings)
+                ['infodekoelektrik@gmail.com'],  # recipient email address
                 fail_silently=False,
             )
             
@@ -44,7 +47,9 @@ def contact_form(request):
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
         except Exception as e:
-            # Log the exception e
-            return JsonResponse({'error': str(e)}, status=500)
+            # Log the detailed exception for debugging
+            logger.error(f"Email sending failed: {str(e)}")
+            print(f"EMAIL ERROR: {str(e)}")  # Console output for debugging
+            return JsonResponse({'error': f'Email sending failed: {str(e)}'}, status=500)
 
     return JsonResponse({'error': 'Invalid request method'}, status=405) 

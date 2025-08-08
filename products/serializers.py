@@ -6,7 +6,7 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProductImage
-        exclude = ['product']
+        fields = ['id', 'image', 'description']
 
     def get_image(self, obj):
         request = self.context.get('request')

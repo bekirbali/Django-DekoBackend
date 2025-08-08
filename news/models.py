@@ -20,6 +20,7 @@ class News(models.Model):
 class NewsImage(models.Model):
     news = models.ForeignKey(News, related_name='additional_images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='news/additional/', blank=True, null=True)
+    title = models.CharField(max_length=200, blank=True, null=True, help_text="Bu görsel için isteğe bağlı başlık")
 
     def __str__(self):
         return f"{self.news.main_title} - Image {self.id}"

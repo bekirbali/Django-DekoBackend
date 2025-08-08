@@ -162,12 +162,12 @@ CKEDITOR_UPLOAD_PATH = "uploads/"
 
 
 # Email settings for contact form
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# For a real SMTP server, you would use something like:
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'bfbalidev@gmail.com' #sender address
-EMAIL_HOST_PASSWORD = 'dhuv jxqm vcaa yfvf'
-DEFAULT_FROM_EMAIL = 'bfbalidev@gmail.com' #recipent
+EMAIL_USE_SSL = False  # Gmail uses TLS on port 587, not SSL
+EMAIL_HOST_USER = 'infodekoelektrik@gmail.com'  # sender address
+EMAIL_HOST_PASSWORD = 'msel tkyp pnwy shur'  # app password
+DEFAULT_FROM_EMAIL = 'infodekoelektrik@gmail.com'  # default from email
+EMAIL_TIMEOUT = 30  # timeout in seconds

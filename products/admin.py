@@ -5,6 +5,7 @@ from .models import Product, ProductImage
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
     extra = 1
+    fields = ('image', 'description')
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
@@ -21,5 +22,12 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):
-    list_display = ('product', 'image')
-    search_fields = ('product__main_title',)
+    list_display = ('product', 'image', 'get_description_preview')
+    search_fields = ('product__main_title', 'description')
+    fields = ('product', 'image', 'description')
+    
+    def get_description_preview(self, obj):
+        if obj.description:
+            return (obj.description[:50] + '...') if len(obj.description) > 50 else obj.description
+        return '-'
+    get_description_preview.short_description = 'Açıklama Önizleme'

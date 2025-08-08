@@ -6,7 +6,7 @@ class NewsImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = NewsImage
-        fields = ['image']
+        fields = ['id', 'image', 'title']
 
     def get_image(self, obj):
         request = self.context.get('request')
