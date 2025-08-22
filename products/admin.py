@@ -9,10 +9,12 @@ class ProductImageInline(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('main_title', 'slug', 'cleaned_main_context', 'created_at', 'updated_at')
+    list_display = ('main_title', 'order', 'slug', 'cleaned_main_context', 'created_at', 'updated_at')
     list_filter = ('created_at', 'updated_at')
     search_fields = ('main_title', 'slug', 'main_context')
     readonly_fields = ('slug', 'created_at', 'updated_at')
+    list_editable = ('order',)
+    ordering = ('order', '-created_at')
     inlines = [ProductImageInline]
 
     def cleaned_main_context(self, obj):

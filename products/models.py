@@ -11,6 +11,7 @@ class Product(models.Model):
     slug = models.SlugField(max_length=255, unique=True, blank=True, null=True)
     main_context = RichTextField(default="")
     main_image = models.ImageField(upload_to='products/', blank=True, null=True)
+    order = models.IntegerField(default=0, help_text="Sıralama numarası (küçük sayı önce gelir)")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -42,7 +43,7 @@ class Product(models.Model):
         return self.main_title
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['order', '-created_at']
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, related_name='additional_images', on_delete=models.CASCADE)
