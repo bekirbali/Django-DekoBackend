@@ -143,9 +143,24 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:3001",
+    "http://127.0.0.1:3000",
     "https://developer43.pythonanywhere.com",
     # Add your deployed frontend's URL here, for example:
     "https://dekoelektrik.vercel.app",
+]
+
+# CORS headers
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'accept-language',
 ]
 
 # REST Framework settings
@@ -155,6 +170,18 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
+}
+
+# Cache configuration for rate limiting
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'contact-form-cache',
+        'TIMEOUT': 3600,  # 1 hour default timeout
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000,
+        }
+    }
 }
 
 # CKEditor settings
@@ -168,6 +195,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False  # Gmail uses TLS on port 587, not SSL
 EMAIL_HOST_USER = 'infodekoelektrik@gmail.com'  # sender address
-EMAIL_HOST_PASSWORD = 'msel tkyp pnwy shur'  # app password
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='msel tkyp pnwy shur')  # app password
 DEFAULT_FROM_EMAIL = 'infodekoelektrik@gmail.com'  # default from email
 EMAIL_TIMEOUT = 30  # timeout in seconds

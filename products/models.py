@@ -52,3 +52,12 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return f"{self.product.main_title} - Image {self.id}"
+
+class ProductDocument(models.Model):
+    product = models.ForeignKey(Product, related_name='documents', on_delete=models.CASCADE)
+    document = models.FileField(upload_to='products/documents/', blank=True, null=True)
+    title = models.CharField(max_length=200, default="", help_text="title of the document (pdf, doc, docx, etc.)")
+    description = models.TextField(blank=True, null=True, help_text="optional description for the document")
+
+    def __str__(self):
+        return f"{self.product.main_title} - {self.title or 'Document'} {self.id}"

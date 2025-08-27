@@ -1,11 +1,16 @@
 from django.contrib import admin
 from django.utils.html import strip_tags
-from .models import Product, ProductImage
+from .models import Product, ProductImage, ProductDocument
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
     extra = 1
     fields = ('image', 'description')
+
+class ProductDocumentInline(admin.TabularInline):
+    model = ProductDocument
+    extra = 1
+    fields = ('title', 'document', 'description')
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
@@ -15,7 +20,7 @@ class ProductAdmin(admin.ModelAdmin):
     readonly_fields = ('slug', 'created_at', 'updated_at')
     list_editable = ('order',)
     ordering = ('order', '-created_at')
-    inlines = [ProductImageInline]
+    inlines = [ProductImageInline, ProductDocumentInline]
 
     def cleaned_main_context(self, obj):
         text = strip_tags(obj.main_context)
@@ -32,4 +37,16 @@ class ProductImageAdmin(admin.ModelAdmin):
         if obj.description:
             return (obj.description[:50] + '...') if len(obj.description) > 50 else obj.description
         return '-'
-    get_description_preview.short_description = 'Açıklama Önizleme'
+    get_description_preview.short_description = 'Description Preview'
+
+@admin.register(ProductDocument)
+class ProductDocumentAdmin(admin.ModelAdmin):
+    list_display = ('product', 'title', 'document', 'get_description_preview')
+    search_fields = ('product__main_title', 'title', 'description')
+    fields = ('product', 'title', 'document', 'description')
+    
+    def get_description_preview(self, obj):
+        if obj.description:
+            return (obj.description[:50] + '...') if len(obj.description) > 50 else obj.description
+        return '-'
+    get_description_preview.short_description = 'Description Preview'
