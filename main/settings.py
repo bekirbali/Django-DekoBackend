@@ -138,7 +138,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS settings
-CORS_ALLOW_ALL_ORIGINS = False  # Only for development
+CORS_ALLOW_ALL_ORIGINS = True  # Temporary for testing
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
@@ -147,6 +147,17 @@ CORS_ALLOWED_ORIGINS = [
     "https://developer43.pythonanywhere.com",
     # Add your deployed frontend's URL here, for example:
     "https://dekoelektrik.vercel.app",
+    "https://www.dekoelektrik.com.tr"
+]
+
+# CORS methods
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
 ]
 
 # CORS headers
@@ -161,7 +172,12 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
     'accept-language',
+    'cache-control',
+    'pragma',
 ]
+
+# Additional CORS settings for preflight requests
+CORS_PREFLIGHT_MAX_AGE = 86400  # 24 hours
 
 # REST Framework settings
 REST_FRAMEWORK = {
@@ -195,6 +211,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False  # Gmail uses TLS on port 587, not SSL
 EMAIL_HOST_USER = 'infodekoelektrik@gmail.com'  # sender address
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='msel tkyp pnwy shur')  # app password
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')  # app password
 DEFAULT_FROM_EMAIL = 'infodekoelektrik@gmail.com'  # default from email
 EMAIL_TIMEOUT = 30  # timeout in seconds
